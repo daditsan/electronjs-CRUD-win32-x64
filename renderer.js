@@ -1,29 +1,52 @@
-document.getElementById('product-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent the form from submitting
+const { ipcRenderer } = require('electron');
 
-    // Get values from input fields
+// Add product event listener
+document.getElementById('product-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
     const name = document.getElementById('product-name').value;
     const quantity = document.getElementById('product-quantity').value;
     const date = document.getElementById('product-date').value;
 
-    // Create a new row in the table
-    const table = document.getElementById('product-table').getElementsByTagName('tbody')[0];
-    const newRow = table.insertRow();
+    ipcRenderer.send('add-product', { name, quantity, date });
+    document.getElementById('product-form').reset();
+});
 
-    newRow.innerHTML = `
-        <td>${name}</td>
-        <td>${quantity}</td>
-        <td>${date}</td>
-        <td><button class="delete-button">Delete</button></td>
-    `;
+ipcRenderer.on('product-added', (event, response) => {
+    console.log(`Product added with ID: ${response.id}`);
+    fetchProducts(); // Refresh the product list after adding
+});
 
-    // Clear input fields
-    this.reset();
+// Function to fetch and display products
+function fetchProducts() {
+    ipcRenderer.send('fetch-products');
+}
 
-    // Add event listener to the delete button
-    newRow.querySelector('.delete-button').addEventListener('click', function() {
-        table.deleteRow(newRow.rowIndex - 1); // Remove the row
+ipcRenderer.on('products-fetched', (event, products) => {
+    const productTableBody = document.querySelector('#product-table tbody');
+    productTableBody.innerHTML = ''; // Clear the existing rows
+
+    products.forEach(product => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${product.date_added}</td>
+            <td><button onclick="deleteProduct(${product.id})">Delete</button></td>
+        `;
+        productTableBody.appendChild(row);
     });
 });
 
-// Implement search functionality (to be added later)
+// Function to delete a product
+function deleteProduct(id) {
+    ipcRenderer.send('delete-product', id);
+}
+
+ipcRenderer.on('product-deleted', (event, id) => {
+    console.log(`Product with ID ${id} deleted`);
+    fetchProducts(); // Refresh the product list after deletion
+});
+
+// Fetch products when the app starts
+fetchProducts(); // Load the product list initially
