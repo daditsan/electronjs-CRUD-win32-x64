@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Stock App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Stock Management</h1>
+        <div class="form-container">
+            <form id="product-form">
+                <input type="text" id="product-name" placeholder="Product Name" required>
+                <input type="number" id="product-quantity" placeholder="Quantity" required>
+                <input type="date" id="product-date" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search Products">
+            <button id="search-button">Search</button>
+        </div>
+        <table id="product-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Product rows will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>
