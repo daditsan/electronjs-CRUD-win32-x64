@@ -51,6 +51,18 @@ ipcMain.on('delete-product', (event, id) => {
     });
 });
 
+// Search products based on a name query
+ipcMain.on('search-products', (event, query) => {
+    db.all(`SELECT * FROM products WHERE name LIKE ?`, [`%${query}%`], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        event.sender.send('products-searched', rows); // Send the search results back to the renderer
+    });
+});
+
+
+
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
