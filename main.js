@@ -51,6 +51,21 @@ ipcMain.on('delete-product', (event, id) => {
     });
 });
 
+// Filter products by date range
+ipcMain.on('filter-products-by-date', (event, { startDate, endDate }) => {
+    db.all(
+        `SELECT * FROM products WHERE date_added BETWEEN ? AND ?`, 
+        [startDate, endDate], 
+        (err, rows) => {
+            if (err) {
+                throw err;
+            }
+            event.sender.send('products-filtered-by-date', rows); // Send back the filtered products
+        }
+    );
+});
+
+
 // Search products based on a name query
 ipcMain.on('search-products', (event, query) => {
     db.all(`SELECT * FROM products WHERE name LIKE ?`, [`%${query}%`], (err, rows) => {

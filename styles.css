@@ -60,3 +60,15 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
+.date-filter-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 10px; /* Adds space between elements */
+    max-width: 300px; /* Set a max width to prevent overflow */
+}
+
+.date-filter-container div {
+    display: flex;
+    flex-direction: column; /* Ensures label and input are stacked */
+}

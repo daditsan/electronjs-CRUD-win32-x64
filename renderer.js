@@ -7,7 +7,11 @@ document.getElementById('product-form').addEventListener('submit', function (e) 
     // Get product details from form inputs
     const name = document.getElementById('product-name').value;
     const quantity = document.getElementById('product-quantity').value;
-    const date = document.getElementById('product-date').value;
+
+    // const date = document.getElementById('product-date').value;
+    const dateInput = document.getElementById('product-date').value;
+    const currentTime = new Date().toTimeString().split(' ')[0]; // Format the time into HH:MM:SS
+    const date = `${dateInput} ${currentTime}`
 
     // Send the product data to the main process
     ipcRenderer.send('add-product', { name, quantity, date });
@@ -15,6 +19,33 @@ document.getElementById('product-form').addEventListener('submit', function (e) 
     // Clear the form inputs after submission
     document.getElementById('product-form').reset();
 });
+
+// Date filter event listener
+document.getElementById('filter-date-button').addEventListener('click', function () {
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+
+    if (startDate && endDate) {
+        ipcRenderer.send('filter-products-by-date', { startDate, endDate });
+    }
+});
+
+// Reset filter event listener
+document.getElementById('reset-button').addEventListener('click', function () {
+    // Clear the date inputs
+    document.getElementById('start-date').value = '';
+    document.getElementById('end-date').value = '';
+
+    // Fetch all products (reset the view)
+    fetchProducts();
+});
+
+
+// Listen for the filtered products based on date range
+ipcRenderer.on('products-filtered-by-date', (event, products) => {
+    updateProductList(products); // Reuse the function to update the product list
+});
+
 
 // Search event listener
 document.getElementById('search').addEventListener('input', function (e) {
