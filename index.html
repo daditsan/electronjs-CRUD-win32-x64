@@ -3,33 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stok</title>
+    <title>Product Stock App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1> Stock Management</h1>
-        <div class="date-filter-container">
-            <div>
-                <label for="start-date">Start Date</label>
-                <input type="datetime-local" id="start-date" required>
-            </div>
-            <div>
-                <label for="end-date">End Date</label>
-                <input type="datetime-local" id="end-date" required>
-            </div>
-            <div>
-                <button id="filter-date-button">Filter by Date</button>
-            </br>
-                <button id="reset-button">Reset Filter</button>
-            </div>
-        </div>        
-        </br>
+        <h1>Product Stock Management</h1>
         <div class="form-container">
             <form id="product-form">
-                <input type="text" id="product-name" placeholder="Product Name" required>
+                <!-- <input type="text" id="product-name" placeholder="Product Name" required> -->
+                <input type="datetime-local" id="product-date" required>
+                <input type="text" id="transaction-number" placeholder="No. Trx" required>
+                <input type="number" id="description" placeholder="Keterangan" required>
+                <input type="number" id="masuk" placeholder="Masuk" required>
+                <input type="number" id="keluar" placeholder="Keluar" required>
                 <input type="number" id="product-quantity" placeholder="Quantity" required>
-                <input type="date" id="product-date" required>
                 <button type="submit">Add Product</button>
             </form>
         </div>
@@ -37,12 +25,26 @@
             <input type="text" id="search" placeholder="Search Products">
             <button id="search-button">Search</button>
         </div>
+        <div class="date-filter-container">
+            <ul>
+                <input type="datetime-local" id="start-date" required>
+            </ul>
+            <ul>
+                <input type="datetime-local" id="end-date" required>
+            </ul>
+
+            <button id="filter-date-button">Filter by Date</button>
+            <button id="reset-button">Reset Filter</button>
+        </div>
         <table id="product-table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
+                    <th>Tanggal</th>
+                    <th>No. Trx</th>
+                    <th>Keterangan</th>
+                    <th>Masuk</th>
+                    <th>Keluar</th>
+                    <th>Saldo</th>
                     <th>Actions</th>
                 </tr>
             </thead>

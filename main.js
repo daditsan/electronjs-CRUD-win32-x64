@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const dbPath = path.join(__dirname, 'productdb.sqlite');
+const dbPath = path.join(__dirname, 'productdb.sqlite2');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         return console.error(err.message);
@@ -13,23 +13,38 @@ const db = new sqlite3.Database(dbPath, (err) => {
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        quantity INTEGER NOT NULL,
-        date_added TEXT NOT NULL
+        date_added TEXT NOT NULL,         -- Tanggal
+        transactionNumber TEXT,          -- No. Trx
+        description INTEGER,              -- Keterangan
+        masuk INTEGER NOT NULL DEFAULT 0, -- Masuk
+        keluar INTEGER NOT NULL DEFAULT 0, -- Keluar
+        saldo INTEGER NOT NULL DEFAULT 0   -- Saldo
     )`);
 });
 
 ipcMain.on('add-product', (event, product) => {
-    const { name, quantity, date } = product;
-    db.run(`INSERT INTO products (name, quantity, date_added) VALUES (?, ?, ?)`, [name, quantity, date], function(err) {
-        if (err) {
-            console.error(err.message);
-        } else {
-            console.log('Product added with ID:', this.lastID);
-            event.reply('product-added', { id: this.lastID, name, quantity, date });
+    const {saldo, date, transactionNumber, description, masuk, keluar } = product;
+    db.run(`INSERT INTO products (saldo, date_added, transactionNumber, description, masuk, keluar) VALUES (?, ?, ?, ?, ?, ?)`, 
+        [saldo, date, transactionNumber, description, masuk, keluar], 
+        function(err) {
+            if (err) {
+                console.error(err.message);
+            } else {
+                console.log('Product added with ID:', this.lastID);
+                event.reply('product-added', { 
+                    id: this.lastID, 
+                    saldo, 
+                    date, 
+                    transactionNumber, 
+                    description, 
+                    masuk, 
+                    keluar 
+                });
+            }
         }
-    });
+    );
 });
+
 
 ipcMain.on('fetch-products', (event) => {
     db.all(`SELECT * FROM products`, [], (err, rows) => {

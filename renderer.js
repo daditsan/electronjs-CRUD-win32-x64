@@ -5,16 +5,29 @@ document.getElementById('product-form').addEventListener('submit', function (e) 
     e.preventDefault(); // Prevent the default form submission
 
     // Get product details from form inputs
-    const name = document.getElementById('product-name').value;
-    const quantity = document.getElementById('product-quantity').value;
+    // const name = document.getElementById('product-name').value;
+    const saldo = document.getElementById('product-quantity').value;
 
     // const date = document.getElementById('product-date').value;
     const dateInput = document.getElementById('product-date').value;
     const currentTime = new Date().toTimeString().split(' ')[0]; // Format the time into HH:MM:SS
     const date = `${dateInput} ${currentTime}`
 
+    const transactionNumber = document.getElementById('transaction-number').value;
+    const description = document.getElementById('description').value;
+    const masuk = document.getElementById('masuk').value;
+    const keluar = document.getElementById('keluar').value;
+
     // Send the product data to the main process
-    ipcRenderer.send('add-product', { name, quantity, date });
+    ipcRenderer.send('add-product', { 
+        // name, 
+        saldo, 
+        date,
+        transactionNumber, 
+        description, 
+        masuk, 
+        keluar  
+    });
 
     // Clear the form inputs after submission
     document.getElementById('product-form').reset();
@@ -86,9 +99,12 @@ function updateProductList(products) {
     products.forEach(product => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.quantity}</td>
             <td>${product.date_added}</td>
+            <td>${product.transactionNumber}</td>
+            <td>${product.description}</td>
+            <td>${product.masuk}</td>
+            <td>${product.keluar}</td>
+            <td>${product.saldo}</td>
             <td><button onclick="deleteProduct(${product.id})">Delete</button></td>
         `;
         productTableBody.appendChild(row); // Append the row to the table body
