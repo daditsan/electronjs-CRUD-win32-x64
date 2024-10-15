@@ -9,9 +9,9 @@
 <body>
     <div class="container">
         <h1>Product Stock Management</h1>
+
         <div class="form-container">
             <form id="product-form">
-                <!-- <input type="text" id="product-name" placeholder="Product Name" required> -->
                 <input type="datetime-local" id="product-date" required>
                 <input type="text" id="transaction-number" placeholder="No. Trx" required>
                 <input type="number" id="description" placeholder="Keterangan" required>
@@ -21,21 +21,27 @@
                 <button type="submit">Add Product</button>
             </form>
         </div>
+
         <div class="search-container">
             <input type="text" id="search" placeholder="Search Products">
             <button id="search-button">Search</button>
         </div>
-        <div class="date-filter-container">
-            <ul>
-                <input type="datetime-local" id="start-date" required>
-            </ul>
-            <ul>
-                <input type="datetime-local" id="end-date" required>
-            </ul>
 
-            <button id="filter-date-button">Filter by Date</button>
-            <button id="reset-button">Reset Filter</button>
+        <div class="date-filter-container">
+            <div>
+                <label for="start-date">Start Date:</label>
+                <input type="datetime-local" id="start-date" required>
+            </div>
+            <div>
+                <label for="end-date">End Date:</label>
+                <input type="datetime-local" id="end-date" required>
+            </div>
+            <div class="filter-buttons">
+                <button id="filter-date-button">Filter by Date</button>
+                <button id="reset-button">Reset Filter</button>
+            </div>
         </div>
+
         <table id="product-table">
             <thead>
                 <tr>

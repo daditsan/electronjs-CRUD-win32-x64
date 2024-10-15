@@ -19,18 +19,33 @@ h1 {
     color: #333;
 }
 
-.form-container, .search-container {
-    display: flex;
-    justify-content: space-between;
+.form-container, .search-container, .date-filter-container {
     margin-bottom: 20px;
 }
 
-input[type="text"], input[type="number"], input[type="date"] {
+.form-container, .search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center items vertically */
+}
+
+.date-filter-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 10px; /* Adds space between elements */
+}
+
+.date-filter-container div {
+    display: flex;
+    flex-direction: column; /* Ensures label and input are stacked */
+}
+
+input[type="text"], input[type="number"], input[type="datetime-local"] {
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 30%;
+    width: calc(100% - 22px); /* Adjust width to account for padding and border */
 }
 
 button {
@@ -59,16 +74,4 @@ th, td {
 
 th {
     background-color: #f2f2f2;
-}
-
-.date-filter-container {
-    display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    gap: 10px; /* Adds space between elements */
-    max-width: 300px; /* Set a max width to prevent overflow */
-}
-
-.date-filter-container div {
-    display: flex;
-    flex-direction: column; /* Ensures label and input are stacked */
 }
